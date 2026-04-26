@@ -14,7 +14,15 @@ let player = {
     cultOfMaroc: false,
     
 }
-//Global variables used in eventOrchestrator
+//event Interpreter variables
 let choiceIndex;
 let outcome;
 let goodOutcome;
+//camp system variables
+let campChoice=0;
+let suppliesToBeSpent= "";
+let statToRestore="";
+let spentSupplies= false;
+let slept = false;
+let builtSnowman = false;
+
