@@ -12,3 +12,13 @@ function campRunner(player) {
     sleepingChoiceHandler(player);
     spendingSuppliesHandler(player);
 }
+// Runner for processing weather and even drawing 
+function weatherRunnerForCamps(){
+    drawFromWeatherPool();
+    calcWhichPoolToUse();
+    displayWeatherMessage();
+}
+function weatherRunnerForStart(){
+    drawFromWeatherPool();
+    calcWhichPoolToUse();
+}

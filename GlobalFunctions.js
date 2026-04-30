@@ -4,6 +4,10 @@ function showEventIntro(event) {
     alert(event.desc);
 }
 
+function getEventType(event){
+    return event.type;
+}
+
 function getEventChoices(event) {
     let choices = "";
     choices += '\n';
@@ -25,13 +29,17 @@ function getChoiceNumbers(event) {
 }
 
 function getPlayerChoice(event, player) {
-    let playerChoice = prompt(`Your stats are: 
+    let playerChoice = +prompt(`Your stats are: 
     Stamina: ${player.stamina}/${player.maxStamina}
     Morale: ${player.morale}/${player.maxMorale}
     Supplies: ${player.supplies}
     You could: ` + getEventChoices(event), getChoiceNumbers(event)
     )
-    return +playerChoice - 1;
+    if(isNaN(playerChoice)){
+        alert("Try again");
+        getPlayerChoice(event,player);
+    }
+    return playerChoice - 1;
 }
 
 
@@ -70,7 +78,6 @@ function variedOutcomeHandler(event, player, key) {
     if (goodOutcome === true ) {
         if (key === "goodOutcome") {
             alert(event.choices[choiceIndex][key].desc)
-            variedOutcome += event.choices[choiceIndex][key].desc;
             for(let proprety in event.choices[choiceIndex][key]){
                 if (proprety === "flagEffect") {
                     event.choices[choiceIndex][key][proprety](player);
@@ -89,7 +96,6 @@ function variedOutcomeHandler(event, player, key) {
     }else if(goodOutcome === false){
         if (key ==="badOutcome") {
             alert(event.choices[choiceIndex][key].desc);
-            variedOutcome += event.choices[choiceIndex][key].desc;
             for(let proprety in event.choices[choiceIndex][key]){
                 if (proprety ==="flagEffect") {
                     event.choices[choiceIndex][key][proprety](player);

@@ -38,14 +38,15 @@ function sleep(player) {
 }
 function setStatToRestore(player) {
     let exit;
-    statToRestore = +prompt(`which stat would you like to restore? [Stamina: 1],[Morale: 2]`, "|1|2|")
-    if(statToRestore == null){
+    statToRestore = prompt(`which stat would you like to restore? [Stamina: 1],[Morale: 2]`, "|1|2|")
+    if (statToRestore == null) {
         exit = confirm("did you change your mind ? Ok => yes , cancel => no")
     }
-    if(exit == true){
+    if (exit == true) {
         campRunner(player);
+        return;
     }
-    if (statToRestore != 1 && statToRestore != 2) {
+    if (+statToRestore != 1 && +statToRestore != 2) {
         alert("Try again Compadre")
         spendSupplies(player);
     }
@@ -60,51 +61,74 @@ function getSuppliesNumber(player) {
     return number;
 }
 function getAmountToRestore(player) {
-    suppliesToBeSpent = +prompt(`You have:${player.supplies}
+    let exit = false;
+    suppliesToBeSpent = prompt(`You have:${player.supplies}
     and your stamina is:${player.stamina}/${player.maxStamina}
     your morale is:${player.morale}/${player.maxMorale}
     how many would you like to spend?`,
         getSuppliesNumber(player))
-    if (isNaN(suppliesToBeSpent)) {
+    if (suppliesToBeSpent == null) {
+        exit = confirm("did you change your mind ? Ok => yes , cancel => no")
+    }
+    if (exit == true) {
+        campRunner(player);
+        return;
+    }
+    if (isNaN(+suppliesToBeSpent)) {
         alert("Try again Gandarme");
         spendSupplies(player);
     }
-    if (suppliesToBeSpent > player.supplies) {
+    if (+suppliesToBeSpent > player.supplies) {
         alert("You cant spend what you dont have");
         spendSupplies(player);
     }
-    if (suppliesToBeSpent <= 0) {
+    if (+suppliesToBeSpent <= 0) {
         alert("Try again Friendo")
         spendSupplies(player);
     }
-    return;
 }
 function spendSupplies(player) {
+    let exit = false;
     if (player.supplies == 0) {
+        alert("You dont have any supplies")
         return;
     }
     getAmountToRestore(player);
     setStatToRestore(player);
-    if (statToRestore === 1) {
-        if (player.stamina + suppliesToBeSpent > player.maxStamina) {
+    if (+statToRestore === 1) {
+        if (player.stamina + (+suppliesToBeSpent) > player.maxStamina) {
             alert("You cant exceed your max stamina");
-            spendSupplies(player);
+            exit = confirm("did you change your mind ? Ok => yes , cancel => no");
+            if (exit) {
+                campRunner(player);
+                return;
+            } else {
+                alert("Try again");
+                spendSupplies(player);
+            }
         }
-        player.stamina += suppliesToBeSpent;
-        player.supplies -= suppliesToBeSpent;
+        player.stamina += (+suppliesToBeSpent);
+        player.supplies -= (+suppliesToBeSpent);
         spentSupplies = true;
     }
-    if (statToRestore === 2) {
-        if (player.morale + suppliesToBeSpent > player.maxMorale) {
+    if (+statToRestore === 2) {
+        if (player.morale + (+suppliesToBeSpent) > player.maxMorale) {
             alert("You cant exceed your max morale")
-            spendSupplies(player);
+            exit = confirm("did you change your mind ? Ok => yes , cancel => no");
+            if (exit) {
+                campRunner(player);
+                return;
+            } else {
+                alert("Try again");
+                spendSupplies(player);
+            }
         }
-        player.morale += suppliesToBeSpent;
-        player.supplies -= suppliesToBeSpent;
-        spentSupplies = true;
     }
+    player.morale += (+suppliesToBeSpent);
+    player.supplies -= (+suppliesToBeSpent);
+    spentSupplies = true;
 }
-function assignCampChoice(player){
+function assignCampChoice(player) {
     campChoice = +prompt(`What would you like to do? 
     You can either
     Build a snowMan(Restore 2 Morale at the cost of 2 Stamina)
@@ -122,7 +146,7 @@ function assignCampChoice(player){
         campRunner(player);
     }
 }
-function snowmanChoiceHandler(player){
+function snowmanChoiceHandler(player) {
     if (campChoice === 1) {
         if (builtSnowman === true) {
             alert("You cant repeat the same action at one camp. Try again");
@@ -135,7 +159,7 @@ function snowmanChoiceHandler(player){
         }
     }
 }
-function sleepingChoiceHandler(player){
+function sleepingChoiceHandler(player) {
     if (campChoice === 2) {
         if (slept === true) {
             alert("You cant repeat the same action at one camp. Try again");
@@ -148,19 +172,19 @@ function sleepingChoiceHandler(player){
         }
     }
 }
-function spendingSuppliesHandler(player){
+function spendingSuppliesHandler(player) {
     if (campChoice === 3) {
         if (spentSupplies === true) {
             alert("You cant repeat the same action at one camp. Try again");
             campRunner(player);
-        }else{
+        } else {
             spendSupplies(player);
         }
-        
+
     }
 }
-function leavingchoiceHandler(player){
-    if(campChoice === 4){
+function leavingchoiceHandler(player) {
+    if (campChoice === 4) {
         return;
     }
 }

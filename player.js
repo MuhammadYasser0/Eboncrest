@@ -1,8 +1,8 @@
 // Player object
 let player = {
-    stamina: 10,
-    morale: 10,
-    supplies: 5,
+    stamina: 6,
+    morale: 6,
+    supplies: 4,
     maxStamina: 10,
     maxMorale: 10,
     iceRope: false,
@@ -25,4 +25,9 @@ let statToRestore="";
 let spentSupplies= false;
 let slept = false;
 let builtSnowman = false;
-
+//
+let currentEventIndex;
+let rareEventGoodOutcome = false;
+let rareEventBadOutcome = false;
+//
+let campAdditive = 0;

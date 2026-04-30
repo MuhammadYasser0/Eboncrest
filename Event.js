@@ -1,4 +1,92 @@
-// Event storage
+//Rare events
+let spring = {
+    title: "Hot Spring",
+    type: "rare",
+    desc: `The hours of walking start to dawn their effect. Your muscles are visibly on edge, almost screaming -- but you can't rest here, the sun sets soon, and resting out in the open is sure to get you noticed, by something. You almost give up in an agreement with your legs, but, as if the mountain heard your silent pleas -- you see steam rise in the corner of your view, hidden by a small hill to the side. Your body, almost limping from exhaustion, still rushes for the source -- and to its pleasure, your eyes confirm the sliver of hope you held on. A small pool of steaming water, coming from a spring hole inside the hill. `,
+    choices: [
+        {
+            header: "Enjoy the water",
+            canClear: false,
+            condition: function(event) {
+                if(rareEventGoodOutcome){
+                    event.choices[0].canClear = true;
+                }
+                
+            },
+            goodOutcome:{
+                desc:`The clothes fly in all directions as you jump in the water -- the difference in temperature is shocking...In a good way. You rest your head on the ledge of the pool, and gaze upon the crimson sky before the sun sets... You feel your control slipping as the rest of your body rests on the warm stones, and close your eyes... A cool chill runs down your neck, signaling the arrival of the night. Leaving the water is hard, but you have to set camp. You collect your scattered clothes, and wave to the water before leaving...`,
+                statChange:{
+                    stamina: 5,
+                    morale: 5,
+                    supplies: 0,
+                    maxStamina: 0,
+                    maxMorale: 0,                    
+                }
+            },
+            badOutcome:{
+                desc:`Clothes begin flying in all directions as you jump in the water -- You feel the hot embrace of the spring welcoming your body. You rest your skull on the edge of the pool, and gaze upon the crimson sky before the sun sets... Melting in the water like jelly, your body submerges deep inside. Just as you are about to close your eyes -- you hear rustling in the nearby bushes beside your bag. Leaving the comfort of the water is painful, but you go and check on your supplies anyway -- the bag is noticeably lighter, you start tracing the rustling of the bushes until -- A tiny man no taller than an end-table gets out of the bushes to a clearing. Carrying a fat bag on top of his head, he waddles over to a small tunnel by the cliff wall, before he gets inside, he turns around seeing you, and rushes inside.`,
+                statChange:{
+                    stamina: 2,
+                    morale: 2,
+                    supplies: -3,
+                    maxStamina: 0,
+                    maxMorale: 0,                                
+                }
+            }
+        },
+        {
+                header: "Leave the spring,and look for a spot to camp",
+                desc: `The dissonance between your body's desire and your mind's caution, is ultimately decided.`,
+        }
+    ]
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+let elevator = {
+    title: "Elevator",
+    type: "rare",
+    desc: `On your path, you notice light reflecting off of an object on the side of a cliff. Its metal frame is covered in rust, and the handle is worn down -- to a mere stub on the side of the door. Opening it, you find a small chamber inside lit by a candle on top of a ledge on the wall. Two vertical lanes carved beside the elevator -- one has a large slab of stone held by a rope, and the other appears hollow with a rope line running down, with a thicker rope diverging at the top of the two lanes. Getting closer to the rope, you hear the faint straining sound of the fabric. you try to pull on the rope -- but it doesn't budge, stiff and swaying`,
+    choices: [
+        {
+            header: "Ride the elevator",
+            canClear: false,
+            condition: function(event) {
+                if (rareEventGoodOutcome) {
+                    event.choices[0].canClear = true;
+                    campAdditive += 1;
+                }
+                if (rareEventBadOutcome) {
+                    campAdditive -= 2;
+                }
+            },
+            goodOutcome: {
+                desc: `You get inside the elevator after  a thorough examination, and turn the door handle, closing it. you hold the brass door stub and turn it over -- with the elevator letting out loud croaks as it begins its ascent, it's suffocating inside, the air is warm and musty, making it harder to breath... Minutes pass as the elevator slowly rises, the struggle of the rope pulling the elevator is palpable, creaking harder and hiccuping along the ride, until you reach the top. You take a deep breath before looking down over the nearby cliff -- you have covered a lot of ground taking this ride.`,
+                statChange: {
+                    stamina: 0,
+                    morale: 1,
+                    supplies: 0,
+                    maxStamina: 0,
+                    maxMorale: 0,
+                }
+            },
+            badOutcome: {
+                desc: `You get inside the elevator after  a thorough examination, and turn the door handle, closing it. you hold the brass door stub and turn it over -- with the elevator letting out loud croaks as it begins its ascent, it's suffocating inside, the air is warm and musty, making it harder to breath... Minutes pass as the elevator slowly rises, the struggle of the rope pulling the elevator is palpable, creaking harder and hiccuping along the ride. The elevator comes to a halt before reaching the top, and then -- the rope snaps. You get knocked from side to side, and feel the body of the elevator screeching as it rubs against the stone. You keep getting knocked around until the elevator collides with a loud *thud*. crawling outside -- you see the leftover ash from one of your camps, you dropped a long way.`,
+                statChange: {
+                    stamina: -1,
+                    morale: 0,
+                    supplies: 0,
+                    maxStamina: 0,
+                    maxMorale: 0,
+                }
+            }
+        },
+        {
+            header: "Leave the rusty elevator",
+            desc: `You get a bad feeling about riding a run down elevator and decide to move on, not trusting the stone driven mechanism.`,
+
+        }
+    ]
+}
+//Common events
 let stoneTower = {
     title: "The Stone Tower",
     type: "common",
@@ -20,25 +108,24 @@ let stoneTower = {
         {
             header: "Stay put",
             canClear: false,
-            desc: `You sit for a few minutes, as you watch him frantically make way for a large pedestal, hiding behind all of the mess.
-            A large window envelopes the room with its purple light. Cracking his back, he waves for you to stand over the pedestal.
-            Standing in front of the window makes you block almost most of the light coming inside.
-          The room grows cold, as the old man closes his eyes, he slowly begins lifting his hands same as before.
-           The faint light glowing brighter and brighter, not stopping until the room glows like a burning sun`,
             condition: function(player, event) {
                 if (player.stamina >= player.maxStamina / 2) {
                     event.choices[0].canClear = true;
                 }
             },
             goodOutcome: {
-                desc: `without missing a beat, you jump just in time for the ice beam shooting out of the wizard's fingers to miss you,
-         carving a massive hole through the side of the tower. the night light returns to silver.You lie on the wooden floor next to the pedestal.
-          Your breathing slowing down,as you wait for the wizard to make his move,with a look of amusement,
-          on his face.He flicks his finger in your direction and you start leaving the ground,as he moves his hand towards the newly made hole,
-          dropping you below. You hurl down the length of the tower,as the ground approaches,you close your eyes,and wait for the impact.
-           But it doesn't come.your feet slowly land on the ground, as a small pouch falls from the open hole to the snow.
-            Opening the pouch, you find an assortment of provisions, as well as a note inside that reads"Pleasure doing business with you".
-            The note is signed S.P on the corner of the page.`,
+                desc: `You sit for a few minutes, as you watch him frantically make way for a large pedestal, hiding behind all of the mess.
+                A large window envelopes the room with its purple light. Cracking his back, he waves for you to stand over the pedestal.
+                Standing in front of the window makes you block almost most of the light coming inside.
+                The room grows cold, as the old man closes his eyes, he slowly begins lifting his hands same as before.
+                The faint light glowing brighter and brighter, not stopping until the room glows like a burning sun without missing a beat, you jump just in time for the ice beam shooting out of the wizard's fingers to miss you,
+                carving a massive hole through the side of the tower. the night light returns to silver.You lie on the wooden floor next to the pedestal.
+                Your breathing slowing down,as you wait for the wizard to make his move,with a look of amusement,
+                on his face.He flicks his finger in your direction and you start leaving the ground,as he moves his hand towards the newly made hole,
+                dropping you below. You hurl down the length of the tower,as the ground approaches,you close your eyes,and wait for the impact.
+                But it doesn't come.your feet slowly land on the ground, as a small pouch falls from the open hole to the snow.
+                Opening the pouch, you find an assortment of provisions, as well as a note inside that reads"Pleasure doing business with you".
+                The note is signed S.P on the corner of the page.`,
                 statChange: {
                     stamina: -1,
                     morale: 0,
@@ -48,11 +135,15 @@ let stoneTower = {
                 }
             },
             badOutcome: {
-                desc: `Your eyes slowly begin to adjust to the light -- until the cold hits.
-         Your chest hollows.The wizard is now standing on the roof. *Funny.He isn't supposed to be there.*
-          As you go flying,you pass through the now broken window -- suddenly, the pain hits. Glass shards scraping at your skin.
-           You let out a primal shriek, as you look down towards your abdomen. A hole the size of your hand has carved its path through your flesh.
-            Your consciousness fades as you fall towards the ice spikes below...Cue ending F(The Tyrian Night)`,
+                desc: `You sit for a few minutes, as you watch him frantically make way for a large pedestal, hiding behind all of the mess.
+                A large window envelopes the room with its purple light. Cracking his back, he waves for you to stand over the pedestal.
+                Standing in front of the window makes you block almost most of the light coming inside.
+                The room grows cold, as the old man closes his eyes, he slowly begins lifting his hands same as before.
+                The faint light glowing brighter and brighter, not stopping until the room glows like a burning sun Your eyes slowly begin to adjust to the light -- until the cold hits.
+                Your chest hollows.The wizard is now standing on the roof. *Funny.He isn't supposed to be there.*
+                As you go flying,you pass through the now broken window -- suddenly, the pain hits. Glass shards scraping at your skin.
+                You let out a primal shriek, as you look down towards your abdomen. A hole the size of your hand has carved its path through your flesh.
+                Your consciousness fades as you fall towards the ice spikes below...Cue ending F(The Tyrian Night)`,
                 flagEffect: function(player) {
                     player.tyrianNight = true;
                 },
@@ -125,7 +216,7 @@ let stoneTower = {
         },
         {
             header: "sneak into the weapons room",
-            desc: `You slowly make your wait to the stairs, as the wizard continues to rummage through his mess...
+            desc: `You slowly make your way to the stairs, as the wizard continues to rummage through his mess...
         ...Walking past the room with the frozen creatures,and the library.You get inside the first room,
          with the icy weaponry.The small penguin still roams the upper shelves. Looking around, arms of all types line the walls,
           and shelves of the room. Ranging from sharp star like metal shapes,to a heavy metal ring lined with spikes along its frame. 
@@ -234,16 +325,16 @@ let cultists = {
                     player.silverMedallion = true;
                 },
                 statChange: {
-                    stamina: -1,
-                    morale: 0,
+                    stamina: 0,
+                    morale: -1,
                     supplies: 3,
                     maxStamina: 0,
                     maxMorale: 0,
                 },
             },
             badOutcome: {
-                desc:`You lie in Wait for the cultists to leave, and watch them carry the tied figure -- his features slowly coming into frame; Pale skin covered in blood. thick slashes at unnatural angle. Seemingly unconscious,he is tossed to the side,while the cultists begin setting fire beneath the statue. As the flames rise high in the sky, their chants get louder and louder. One of them walks up to their victim, dragging his limp body toward the flames...Thick wood stumps surround the fire, as the pale man begins dancing in the flames. The stone pouch stuck in his mouth, barley lets out a sound...A painful amount of time passes as they dance around the flames -- you feel your insides turn against themselves, shaking the flesh walls around. Your head is getting lighter. Your Vision blurry. As the light fades from your eyes, your hiding bush catches the fall...Cold drops descend on your face, jolting you awake. Dark soot flies around you,as you see a small crate sticking out of the snow, near the statue. Walking up,you find a small cache with some rations and a silver medallion laying in the middle. You grab the medallion and rations... but the chanting returns. Turning around you see some of the cultists sprinting toward you with unnatural speed.*Shit.* You try to make a dash for a small rocky path behind the statue -- but a sharp pain below your neck drops you to the ground -- just before you could turn the corner. A small pool of blood soon concentrates around your head, and your eyes start give out as you hear footsteps on the snow...`,
-                flagEffect: function(player){
+                desc: `You lie in Wait for the cultists to leave, and watch them carry the tied figure -- his features slowly coming into frame; Pale skin covered in blood. thick slashes at unnatural angle. Seemingly unconscious,he is tossed to the side,while the cultists begin setting fire beneath the statue. As the flames rise high in the sky, their chants get louder and louder. One of them walks up to their victim, dragging his limp body toward the flames...Thick wood stumps surround the fire, as the pale man begins dancing in the flames. The stone pouch stuck in his mouth, barley lets out a sound...A painful amount of time passes as they dance around the flames -- you feel your insides turn against themselves, shaking the flesh walls around. Your head is getting lighter. Your Vision blurry. As the light fades from your eyes, your hiding bush catches the fall...Cold drops descend on your face, jolting you awake. Dark soot flies around you,as you see a small crate sticking out of the snow, near the statue. Walking up,you find a small cache with some rations and a silver medallion laying in the middle. You grab the medallion and rations... but the chanting returns. Turning around you see some of the cultists sprinting toward you with unnatural speed.*Shit.* You try to make a dash for a small rocky path behind the statue -- but a sharp pain below your neck drops you to the ground -- just before you could turn the corner. A small pool of blood soon concentrates around your head, and your eyes start give out as you hear footsteps on the snow...`,
+                flagEffect: function(player) {
                     player.cultOfMaroc = true;
                 }
             }
